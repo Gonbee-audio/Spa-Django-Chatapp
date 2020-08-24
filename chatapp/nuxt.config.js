@@ -6,6 +6,10 @@ export default {
   ** See https://nuxtjs.org/api/configuration-mode
   */
   mode: 'spa',
+    server: {
+    port: 3000,
+    host: '0.0.0.0',  
+  },
   /*
   ** Nuxt target
   ** See https://nuxtjs.org/api/configuration-target
@@ -52,8 +56,6 @@ export default {
   /*
   ** Nuxt.js modules
   */
-  modules: [
-  ],
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -80,5 +82,42 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
-  }
+    }, //追記の際はカンマを忘れずに
+    watchers: {
+    webpack: {
+      poll: 3000
+    },
+  },
+    modules: [
+      '@nuxtjs/axios',
+      '@nuxtjs/auth',
+      '@nuxtjs/proxy'
+    ],
+    axios: {
+
+      baseURL: "http://0.0.0.0:8000"
+      //proxy: true
+    },
+    //proxy: {
+    //  'api/':'http://0.0.0.0:8000'
+    //  }
+    auth: {
+      redirect: {
+        login: { url: '/chat', method: 'post', propertyName: 'token' },
+        logout: { url: '/', method: 'post' },
+        callback: false,   // Oauth認証等で必要となる コールバックルート
+        home: '/chat',         // ログイン後のリダイレクトURL
+      },
+      strategies: {
+        local: {
+          endpoints: {
+            login: { url: '/api/login/', method: 'post', propertyName: 'token' },
+            user: { url: '/api/users/', method: 'get', propertyName: false},
+            logout: false
+          },
+          // tokenRequired: true,
+          // tokenType: 'bearer'
+        }
+      }
+    }
 }

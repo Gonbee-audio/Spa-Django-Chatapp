@@ -1,0 +1,52 @@
+<template>
+<v-app>
+  <v-card>
+    <v-card-title>
+      <h1 class="display-1">SignUp</h1>
+    </v-card-title>
+    <v-card-text>
+      <v-form>
+        <v-text-field prepend-icon="mdi-account-circle" 
+                      label="username"
+                      v-model="username" />
+        <v-text-field type="password"
+                      prepend-icon="mdi-lock" 
+                      append-icon="mdi-eye-off" 
+                      label="password"
+                      v-model="password" />
+        <v-card-actions>
+          <v-btn @click="submit">create</v-btn>
+        </v-card-actions> 
+      </v-form>
+    </v-card-text>
+  </v-card>
+</v-app>
+</template>
+
+<script>
+export default {
+  name: 'Login',
+  data(){
+    return{
+      username: null,
+      password: null,
+    }
+  },
+  methods:{
+  async submit(){
+      let params = new URLSearchParams();
+      params.append('username', this.username);
+      params.append('nickname', this.username);
+      params.append('password', this.password);
+      await this.$axios.$post('http://0.0.0.0:8000/api-user/register/', params)
+.then(response => { 
+  console.log(response)
+  alert('アカウントが作成されました！')
+})
+.catch(error => {
+    console.log('response', error.response.data);
+});
+  }
+  }
+}
+</script>

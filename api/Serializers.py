@@ -2,24 +2,24 @@ from rest_framework import serializers
 from .models import ChatMessage, Comment, SecredMessage
 from accounts.models import User
 
-class ChatMessageSerializers(serializers.HyperlinkedModelSerializer):
+class ChatMessageSerializers(serializers.ModelSerializer):
     class Meta:
         model = ChatMessage
-        fields = ('nickname', 'icon')
+        fields = ('nickname', 'icon', 'text', 'username')
 
-class CommentSerializers(serializers.HyperlinkedModelSerializer):
+class CommentSerializers(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('username', 'text','icon')
 
 
-class SecredMessageSerializers(serializers.HyperlinkedModelSerializer):
+class SecredMessageSerializers(serializers.ModelSerializer):
     class Meta:
         model = SecredMessage
         fields = ('yourname', 'username', 'nickname','image', 'text', 'icon')
 
-class UserSerializers(serializers.HyperlinkedModelSerializer):
+class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('nickname', 'image')
+        fields = ('username', 'nickname', 'password', 'image')
 

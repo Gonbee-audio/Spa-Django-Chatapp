@@ -3,7 +3,7 @@ from rest_framework import viewsets, filters
 
 from .models import ChatMessage, Comment, SecredMessage
 from accounts.models import User
-from .Serializers import UserSerializers, CommentSerializers, SecredMessageSerializers, ChatMessageSerializers
+from .serializers import UserSerializers, CommentSerializers, SecredMessageSerializers, ChatMessageSerializers
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -22,3 +22,4 @@ class CommentViewSet(viewsets.ModelViewSet):
 class SecredMessageViewSet(viewsets.ModelViewSet):
     queryset = SecredMessage.objects.all()
     serializer_class = SecredMessageSerializers
+

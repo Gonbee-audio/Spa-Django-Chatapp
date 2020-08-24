@@ -38,11 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'api',
-    'accounts'
+    'accounts',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -126,8 +130,28 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+JWT_AUTH = {
+    'JWT_VERIFY_EXPIRATION': False,
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+}
+
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',) 
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # インストールしたJWTライブラリ
+        'rest_framework.authentication.SessionAuthentication',  # デフォルトの認証方式
+        'rest_framework.authentication.BasicAuthentication'  # デフォルトの認証方式
+    ),
+    'NON_FIELD_ERRORS_KEY': 'detail',
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# 許可するオリジン
+CORS_ORIGIN_WHITELIST = [
+    'http://0.0.0.0:3000',
+]
+# レスポンスを公開する
+CORS_ALLOW_CREDENTIALS = True

@@ -1,10 +1,31 @@
 [
   {
-    "name": "inspire",
-    "path": "/inspire",
-    "component": "/usr/src/app/pages/inspire.vue",
-    "chunkName": "pages/inspire",
-    "_name": "_2ff6773a"
+    "name": "chat",
+    "path": "/chat",
+    "component": "/usr/src/app/pages/chat.vue",
+    "chunkName": "pages/chat",
+    "_name": "_53774028"
+  },
+  {
+    "name": "detail",
+    "path": "/detail",
+    "component": "/usr/src/app/pages/detail.vue",
+    "chunkName": "pages/detail",
+    "_name": "_92761abe"
+  },
+  {
+    "name": "private",
+    "path": "/private",
+    "component": "/usr/src/app/pages/private.vue",
+    "chunkName": "pages/private",
+    "_name": "_142fad63"
+  },
+  {
+    "name": "signup",
+    "path": "/signup",
+    "component": "/usr/src/app/pages/signup.vue",
+    "chunkName": "pages/signup",
+    "_name": "_53cee030"
   },
   {
     "name": "index",
