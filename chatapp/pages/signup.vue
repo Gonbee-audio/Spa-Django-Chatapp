@@ -38,6 +38,7 @@ export default {
       params.append('username', this.username);
       params.append('nickname', this.username);
       params.append('password', this.password);
+      console.log(params)
       await this.$axios.$post('http://0.0.0.0:8000/api-user/register/', params)
 .then(response => { 
   console.log(response)

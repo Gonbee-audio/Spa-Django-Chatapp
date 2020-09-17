@@ -5,3 +5,5 @@ djangorestframework>=3.11.0
 django-filter>=0.11.0
 django-cors-headers>=3.0.0
 djangorestframework-jwt>=1.11.0
+djoser == 2.0.1
+djangorestframework-simplejwt>=4.4.0

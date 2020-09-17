@@ -105,6 +105,11 @@ export default {
           icon: 'mdi-chart-bubble',
           title: 'signup',
           to: '/signup'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'mainpage',
+          to: '/chat'
         }
       ],
       miniVariant: false,

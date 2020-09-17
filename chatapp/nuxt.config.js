@@ -112,7 +112,7 @@ export default {
         local: {
           endpoints: {
             login: { url: '/api/login/', method: 'post', propertyName: 'token' },
-            user: { url: '/api/users/', method: 'get', propertyName: false},
+            user: { url: '/api/auth/users/me/', method: 'get', propertyName: false },
             logout: false
           },
           // tokenRequired: true,

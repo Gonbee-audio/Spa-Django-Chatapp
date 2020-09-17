@@ -1,6 +1,7 @@
 <template>
 <div>
-    {{User}}
+    <p>name:{{ $auth.user.username }}</p>
+    <p>nickname:{{ $auth.user.nickname }}</p>
     <div v-for="u in User" :key=u.nickname align="center">
         <h2>
         {{u.nickname}}<br>
