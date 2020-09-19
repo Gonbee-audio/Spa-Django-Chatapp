@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import qs from 'qs';
+
 export default {
   name: 'Login',
   data(){
@@ -33,21 +35,44 @@ export default {
     }
   },
   methods:{
+
+/*
+async submit(){
+const data = { 
+  'username': this.username,
+  'nickname': this.username,
+  'password': this.password 
+};
+const url = "http://0.0.0.0:8000/api-user/register/"
+const options = {
+  method: 'POST',
+  headers: { 'content-type': 'application/x-www-form-urlencoded' },
+  data: qs.stringify(data),
+  url,
+};
+console.log(options)
+await this.$axios(options);
+}
+*/
+
+
   async submit(){
-      let params = new URLSearchParams();
+      const params = new URLSearchParams();
       params.append('username', this.username);
       params.append('nickname', this.username);
       params.append('password', this.password);
-      console.log(params)
+      
       await this.$axios.$post('http://0.0.0.0:8000/api-user/register/', params)
 .then(response => { 
-  console.log(response)
+  console.log(response.data)
   alert('アカウントが作成されました！')
 })
 .catch(error => {
     console.log('response', error.response.data);
 });
   }
+
+
   }
 }
 </script>

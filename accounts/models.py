@@ -8,20 +8,20 @@ from django.utils.functional import cached_property
 class UserManager(BaseUserManager):
 
     """
-    Create and save user with email
+    Create and save user 
     """
 
-    def create_user(self, request_data, **kwargs):
+    def create_user(self, username, password, **kwargs):
         now = timezone.now()
 
         user = self.model(
-            username=request_data['username'],
+            username=username,
             is_active=True,
             last_login=now,
             date_joined=now,
         )
-
-        user.set_password(request_data['password'])
+        user = self.model(nickname=username, **extra_fields)
+        user.set_password(password)
         user.save(using=self._db)
         return user
 

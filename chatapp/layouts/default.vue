@@ -1,13 +1,13 @@
 <template>
   <v-app dark>
     <v-navigation-drawer
+      app dark color="blue"
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
-      app
     >
-      <v-list>
+      <v-list app dark color="blue white--text">
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -25,9 +25,9 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
+      app dark color="blue"
       :clipped-left="clipped"
       fixed
-      app
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn
