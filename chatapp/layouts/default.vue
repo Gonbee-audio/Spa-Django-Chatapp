@@ -10,6 +10,7 @@
       <v-switch
         v-model="landscape"
         :prepend-icon="themeIcon"
+        color="white--text"
       ></v-switch>
 
       <v-list app dark color="blue darken-2 white--text">
@@ -162,12 +163,12 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'Django-Vue-Spa-ChatApp'
     }
   },
   computed: {
     themeIcon(){
-      return this.changeThema ? 'mdi-weather-night' : 'mdi-weather-sunny'
+      return this.landscape ? 'mdi-weather-night' : 'mdi-weather-sunny'
     },
     theme() {
       return this.$vuetify.theme.dark ? "dark" : "light";
