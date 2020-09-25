@@ -1,5 +1,5 @@
 <template>
-<v-app>
+<v-app :style="{background: $vuetify.theme.themes[theme].background}">
   <v-card>
     <v-card-title>
       <h1 class="display-1">SignUp</h1>
@@ -38,6 +38,11 @@ export default {
       username: [],
       password: null,
       success: false,
+    }
+  },
+  computed: {
+    theme() {
+      return this.$vuetify.theme.dark ? "dark" : "light";
     }
   },
   methods:{

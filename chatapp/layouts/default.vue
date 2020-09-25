@@ -1,13 +1,18 @@
 <template>
-  <v-app dark>
+  <v-app :style="{background: $vuetify.theme.themes[theme].background}">
     <v-navigation-drawer
-      app dark color="blue"
+      app dark color="blue darken-2"
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
     >
-      <v-list app dark color="blue white--text">
+      <v-switch
+        v-model="landscape"
+        :prepend-icon="themeIcon"
+      ></v-switch>
+
+      <v-list app dark color="blue darken-2 white--text">
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -25,7 +30,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
-      app dark color="blue"
+      app dark color="blue darken-2"
       :clipped-left="clipped"
       fixed
     >
@@ -92,8 +97,8 @@
           <v-btn @click="chatPage">Chat Page</v-btn>
         </v-list-item-content>
       </v-list-item>
-      <!--<a v-else>test</a>
--->
+
+      <!--<a v-else>test</a>-->
       <v-list-item three-line>
         <v-list-item-content>
           <v-btn @click="logoutSheet = !logoutSheet">Logout</v-btn>
@@ -102,7 +107,7 @@
 
 <!-- Open v-btn sheet-->
     <v-bottom-sheet v-model="logoutSheet">
-      <v-sheet class="text-center" height="200px">
+      <v-sheet class="text-center" height="200px" color="green">
         <div>want you to logout?</div>
         <v-btn
           class="mt-6"
@@ -113,7 +118,7 @@
         <v-btn
           class="mt-6"
           text
-          color="red" 
+          color="blue" 
           @click="logout"
         >logout</v-btn>
       </v-sheet>
@@ -141,15 +146,16 @@ export default {
       drawer: false,
       fixed: false,
       logoutSheet: false,
+      landscape: false,
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Login',
           to: '/'
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'signup',
+          title: 'Signup',
           to: '/signup'
         },
       ],
@@ -157,6 +163,20 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js'
+    }
+  },
+  computed: {
+    themeIcon(){
+      return this.changeThema ? 'mdi-weather-night' : 'mdi-weather-sunny'
+    },
+    theme() {
+      return this.$vuetify.theme.dark ? "dark" : "light";
+    }
+  },
+  watch: {
+    landscape() {
+      console.log(this.landscape)
+      this.$vuetify.theme.dark = this.landscape
     }
   },
   methods: {
@@ -169,12 +189,10 @@ export default {
     },
     logout() {
       if(this.$auth.loggedIn == false){
-
       } else {
         this.$auth.logout();
         this.$router.push('/')
       }
-      
     },
   }
 }

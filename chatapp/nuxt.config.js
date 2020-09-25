@@ -63,7 +63,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,
@@ -72,7 +72,13 @@ export default {
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          success: colors.green.accent3,
+          background: colors.black,
+        },
+        light: {
+          primary: colors.red.darken2,
+          accent: colors.blue.darken3,
+          background: colors.indigo.lighten5,
         }
       }
     }
@@ -82,7 +88,7 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
-    }, //追記の際はカンマを忘れずに
+    }, 
     watchers: {
     webpack: {
       poll: 3000

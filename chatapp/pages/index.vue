@@ -1,4 +1,5 @@
 <template>
+<v-app :style="{background: $vuetify.theme.themes[theme].background}">
   <v-card width="400px" class="mx-auto mt-5">
     <v-form> 
       <v-card-title>
@@ -11,6 +12,7 @@
       </v-card-actions> 
     </v-form>
   </v-card>
+</v-app>
 </template>
 
 <script>
@@ -29,6 +31,11 @@ export default {
       }
     }
   },
+   computed: {
+    theme() {
+      return this.$vuetify.theme.dark ? "dark" : "light";
+    }
+  },
   methods:{
     async loginUser(){
       try{
@@ -43,3 +50,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>

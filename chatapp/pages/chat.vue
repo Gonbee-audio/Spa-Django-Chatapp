@@ -1,5 +1,5 @@
 <template>
-<v-app>
+<v-app :style="{background: $vuetify.theme.themes[theme].background}">
     <v-app-bar>
         <h1>
             
@@ -13,7 +13,7 @@
     </v-app-bar>
     <v-content>
     <div v-for="u in User" :key=u.nickname align="center">
-        <v-card app dark color="blue" style="margin: 10px;">
+        <v-card app color="blue" style="margin: 10px;">
         {{u.nickname}}<br>
         {{u.text}}
         <a>
@@ -58,6 +58,11 @@ export default{
             icon: [],
         }
     },
+    computed: {
+    theme() {
+      return this.$vuetify.theme.dark ? "dark" : "light";
+    }
+  },
     async mounted(){
         //複数データがないとapiがhtmlを拾ってきて動かないのかもしれない。。。
         const url = "http://0.0.0.0:8000/api/chatmessage/"
