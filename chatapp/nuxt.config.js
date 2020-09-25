@@ -103,9 +103,9 @@ export default {
     //  }
     auth: {
       redirect: {
-        login: { url: '/chat', method: 'post', propertyName: 'token' },
-        logout: { url: '/', method: 'post' },
-        callback: false,   // Oauth認証等で必要となる コールバックルート
+        login: { url: '/', method: 'post', propertyName: 'token' },
+        logout: '/',
+        callback: true,   // Oauth認証等で必要となる コールバックルート
         home: '/chat',         // ログイン後のリダイレクトURL
       },
       strategies: {
@@ -115,8 +115,8 @@ export default {
             user: { url: '/api-user/mypage/', method: 'get', propertyName: false },
             logout: false
           },
-          // tokenRequired: true,
-          // tokenType: 'bearer'
+          tokenRequired: true,
+          tokenType: 'bearer'
         }
       }
     }

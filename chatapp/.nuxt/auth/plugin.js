@@ -7,14 +7,14 @@ import scheme_003d9a64 from './schemes/local.js'
 
 export default function (ctx, inject) {
   // Options
-  const options = {"resetOnError":false,"scopeKey":"scope","rewriteRedirects":true,"fullPathRedirect":false,"watchLoggedIn":true,"redirect":{"login":{"url":"/chat","method":"post","propertyName":"token"},"logout":{"url":"/","method":"post"},"home":"/chat","callback":false},"vuex":{"namespace":"auth"},"cookie":{"prefix":"auth.","options":{"path":"/"}},"localStorage":{"prefix":"auth."},"token":{"prefix":"_token."},"refresh_token":{"prefix":"_refresh_token."},"defaultStrategy":"local"}
+  const options = {"resetOnError":false,"scopeKey":"scope","rewriteRedirects":true,"fullPathRedirect":false,"watchLoggedIn":true,"redirect":{"login":{"url":"/","method":"post","propertyName":"token"},"logout":"/","home":"/chat","callback":true},"vuex":{"namespace":"auth"},"cookie":{"prefix":"auth.","options":{"path":"/"}},"localStorage":{"prefix":"auth."},"token":{"prefix":"_token."},"refresh_token":{"prefix":"_refresh_token."},"defaultStrategy":"local"}
 
   // Create a new Auth instance
   const $auth = new Auth(ctx, options)
 
   // Register strategies
   // local
-  $auth.registerStrategy('local', new scheme_003d9a64($auth, {"endpoints":{"login":{"url":"/api/login/","method":"post","propertyName":"token"},"logout":false,"user":{"url":"/api-user/mypage/","method":"get","propertyName":false}},"_name":"local"}))
+  $auth.registerStrategy('local', new scheme_003d9a64($auth, {"endpoints":{"login":{"url":"/api/login/","method":"post","propertyName":"token"},"logout":false,"user":{"url":"/api-user/mypage/","method":"get","propertyName":false}},"tokenRequired":true,"tokenType":"bearer","_name":"local"}))
 
   // Inject it to nuxt context as $auth
   inject('auth', $auth)

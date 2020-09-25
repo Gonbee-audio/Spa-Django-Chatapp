@@ -62,6 +62,8 @@
         <nuxt />
       </v-container>
     </v-content>
+  
+<!-- After  Login menu-->
     <v-navigation-drawer
       v-model="rightDrawer"
       :right="right"
@@ -77,8 +79,51 @@
           </v-list-item-action>
           <v-list-item-title>Switch drawer (click me)</v-list-item-title>
         </v-list-item>
+
+      <v-list-item line>
+        <v-list-item-content>
+          <a>YourLoginState:{{this.$auth.loggedIn}}</a>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item  two-line>
+        <v-list-item-content>
+          <v-list-item-title>Two-line item</v-list-item-title>
+          <v-btn @click="chatPage">Chat Page</v-btn>
+        </v-list-item-content>
+      </v-list-item>
+      <!--<a v-else>test</a>
+-->
+      <v-list-item three-line>
+        <v-list-item-content>
+          <v-btn @click="logoutSheet = !logoutSheet">Logout</v-btn>
+        </v-list-item-content>
+      </v-list-item>
+
+<!-- Open v-btn sheet-->
+    <v-bottom-sheet v-model="logoutSheet">
+      <v-sheet class="text-center" height="200px">
+        <div>want you to logout?</div>
+        <v-btn
+          class="mt-6"
+          text
+          color="blue"
+          @click="logoutSheet = !logoutSheet"
+        >close</v-btn>
+        <v-btn
+          class="mt-6"
+          text
+          color="red" 
+          @click="logout"
+        >logout</v-btn>
+      </v-sheet>
+    </v-bottom-sheet>
+
+
+
       </v-list>
     </v-navigation-drawer>
+
     <v-footer
       :absolute="!fixed"
       app
@@ -95,6 +140,7 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
+      logoutSheet: false,
       items: [
         {
           icon: 'mdi-apps',
@@ -106,17 +152,31 @@ export default {
           title: 'signup',
           to: '/signup'
         },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'mainpage',
-          to: '/chat'
-        }
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js'
     }
+  },
+  methods: {
+    chatPage(){
+      if(this.$auth.loggedIn == true){
+        this.$router.push('/chat')
+      } else {
+        alert('login')
+      }
+    },
+    logout() {
+      if(this.$auth.loggedIn == false){
+
+      } else {
+        this.$auth.logout();
+        this.$router.push('/')
+      }
+      
+    },
   }
 }
+
 </script>

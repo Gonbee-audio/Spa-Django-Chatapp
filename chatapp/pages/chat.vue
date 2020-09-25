@@ -2,15 +2,28 @@
 <v-app>
     <v-app-bar>
         <h1>
+            
             name:{{ $auth.user.username }}<br>
-            nickname:{{ $auth.user.nickname }}
+            nickname:{{ $auth.user.nickname }}<br>
+            <img :src="icon = 'http://0.0.0.0:8000' + $auth.user.icon" width="50" height="50">
+            
         </h1>
+        <br>
+        
     </v-app-bar>
     <v-content>
     <div v-for="u in User" :key=u.nickname align="center">
         <v-card app dark color="blue" style="margin: 10px;">
         {{u.nickname}}<br>
         {{u.text}}
+        <a>
+            <v-btn class="ma-2" text icon color="blue lighten-2">
+                <v-icon>mdi-thumb-up</v-icon>
+            </v-btn>
+            <v-btn class="ma-2" text icon color="red lighten-2">
+                <v-icon>mdi-thumb-down</v-icon>
+            </v-btn>
+        </a>
         </v-card>
     </div>
     </v-content>
@@ -18,7 +31,7 @@
         <input type="hidden" :value="nickname = $auth.user.nickname">
         <input type="hidden" :value="username = $auth.user.username">
 
-<!--まだuserの写真をimageにしてvue側にを渡すapiが完成していないからimageタグは仮のものを使います-->
+<!--まだchatの写真をimageにしてvue側にを渡すapiが完成していないからimageタグは仮のものを使います-->
         <input type="hidden" v-model="image" value="test">
         <v-text-field prepend-icon="mdi-account-circle" 
             label="text"
@@ -41,7 +54,8 @@ export default{
             User: [],
             username: [],
             nickname: [],
-            image: []
+            image: [],
+            icon: [],
         }
     },
     async mounted(){
