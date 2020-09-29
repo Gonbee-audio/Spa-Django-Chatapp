@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['0.0.0.0']
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'accounts',
     'corsheaders',
     'djoser',
+    'channels', 
 ]
 
 MIDDLEWARE = [
@@ -75,6 +77,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'chatadmin.wsgi.application'
+ASGI_APPLICATION = 'chatadmin.routing.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [('redis', 6379)]
+        }
+    }
+}
 
 
 # Database
