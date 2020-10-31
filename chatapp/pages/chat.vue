@@ -12,7 +12,8 @@
         
     </v-app-bar>
     <v-content>
-    <div v-for="u in User" :key=u.nickname align="center">
+
+    <div v-for="(u, index) in Message2" :key="'info2-' + index" align="center">
         <v-card app color="blue" style="margin: 10px;">
         {{u.nickname}}<br>
         {{u.text}}
@@ -35,9 +36,9 @@
         <input type="hidden" v-model="image" value="test">
         <v-text-field prepend-icon="mdi-account-circle" 
             label="text"
-            v-model="text" />
+            :value="text" />
         <v-card-actions>
-          <v-btn @click="submit">create</v-btn>
+          <v-btn @click="submit" >send</v-btn>
         </v-card-actions> 
     </v-form>
 </v-app>
@@ -51,11 +52,13 @@ import axios from 'axios'
 export default{
     data(){
         return{
-            User: [],
+            Message2: null,
             username: [],
             nickname: [],
             image: [],
             icon: [],
+            text: [],
+            websocket: [],
         }
     },
     computed: {
@@ -67,26 +70,59 @@ export default{
         //複数データがないとapiがhtmlを拾ってきて動かないのかもしれない。。。
         const url = "http://0.0.0.0:8000/api/chatmessage/"
         const responce = await this.$axios.$get(url)
-        this.User = responce
+        this.Message2 = responce
         console.log(this.request)
   },
+  created: function(){
+      console.log("Starting WebSocket Connect!!")
+      const webapi = new WebSocket(
+            "ws://0.0.0.0:8000/api/ws/"
+      );
+      console.log(webapi)
+
+
+      webapi.onmessage = function(event) {
+      console.log(event);
+    }
+
+      webapi.onopen = function(event) {
+      console.log(event)
+      console.log("Successfully connected to the echo websocket server...")
+    }
+    this.websocket = webapi
+  },
   methods:{
-    async submit(){
-        const params = new URLSearchParams();
+    submit: function (message) {
+        console.log(this.websocket)
+        this.websocket.onmessage = function(e){ console.log(e.data); };
+        this.websocket.onopen = () => this.websocket.send(this.text);
+    }
+
+
+
+
+
+        /*
+        const url2 = new WebSocket("wss://" + "0.0.0.0:8000" + "/ws/")
+        url2.onmessage = function(evt) { responseData(evt); };
+        console.log(document)
+        const params = new URLSearchParams(url2);
         params.append('text', this.text);
         params.append('nickname', this.nickname);
         params.append('username', 'tesst');
         params.append('icon', 'test.img');
+        
     //params.append('password', this.password);
-        await this.$axios.$post('http://0.0.0.0:8000/api/chatmessage/', params)
+        await this.$axios.$post(url2, params)
         .then(response => { 
              console.log(response.data)
             alert('送信に成功しました！')
         })
         .catch(error => {
              console.log('response', error.response.data);
+    
 });
-  }
+*/
   }
 }
 </script>

@@ -8,4 +8,5 @@ djangorestframework-jwt>=1.11.0
 djoser == 2.0.1
 djangorestframework-simplejwt>=4.4.0
 redis>=2.10.6
+django-channels>=0.7.0
 channels_redis>=2.2.1
