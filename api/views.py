@@ -22,4 +22,3 @@ class CommentViewSet(viewsets.ModelViewSet):
 class SecredMessageViewSet(viewsets.ModelViewSet):
     queryset = SecredMessage.objects.all()
     serializer_class = SecredMessageSerializers
-

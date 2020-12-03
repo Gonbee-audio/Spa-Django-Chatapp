@@ -27,6 +27,11 @@
         </a>
         </v-card>
     </div>
+
+    <textarea id="chat-log">
+        
+    </textarea>
+
     </v-content>
     <v-form>
         <input type="hidden" :value="nickname = $auth.user.nickname">
@@ -36,7 +41,7 @@
         <input type="hidden" v-model="image" value="test">
         <v-text-field prepend-icon="mdi-account-circle" 
             label="text"
-            :value="text" />
+            v-model="text" />
         <v-card-actions>
           <v-btn @click="submit" >send</v-btn>
         </v-card-actions> 
@@ -57,7 +62,7 @@ export default{
             nickname: [],
             image: [],
             icon: [],
-            text: [],
+            text: "",
             websocket: [],
         }
     },
@@ -66,37 +71,51 @@ export default{
       return this.$vuetify.theme.dark ? "dark" : "light";
     }
   },
-    async mounted(){
+    mounted(){
         //複数データがないとapiがhtmlを拾ってきて動かないのかもしれない。。。
         const url = "http://0.0.0.0:8000/api/chatmessage/"
-        const responce = await this.$axios.$get(url)
+        const responce = this.$axios.$get(url)
         this.Message2 = responce
-        console.log(this.request)
+        this.websocket.onmessage = function(e){ 
+                const data = JSON.parse(e.data)
+                document.querySelector('#chat-log').value += (data.message + '\n');
+        }
+        
   },
+
   created: function(){
       console.log("Starting WebSocket Connect!!")
       const webapi = new WebSocket(
             "ws://0.0.0.0:8000/api/ws/"
       );
+      
       console.log(webapi)
 
-
-      webapi.onmessage = function(event) {
-      console.log(event);
-    }
-
       webapi.onopen = function(event) {
-      console.log(event)
+      //console.log(event)
+      console.log(webapi)
       console.log("Successfully connected to the echo websocket server...")
     }
     this.websocket = webapi
   },
   methods:{
-    submit: function (message) {
-        console.log(this.websocket)
-        this.websocket.onmessage = function(e){ console.log(e.data); };
-        this.websocket.onopen = () => this.websocket.send(this.text);
-    }
+    submit: function (e) {
+        const message = this.text
+        const webapi = new WebSocket(
+            "ws://0.0.0.0:8000/api/ws/"
+        );
+        webapi.onopen = () => 
+        webapi.send(
+            JSON.stringify({
+                "message": message
+        }),
+        );
+
+
+        this.text = ""
+    },
+    
+
 
 
 
