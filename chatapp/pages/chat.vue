@@ -80,7 +80,6 @@ export default{
         
         this.websocket.onmessage = function(e){ 
                 const data = JSON.parse(e.data)
-                console.log(data.message.message)
                 const mes = document.createElement('div');
                 mes.className = "v-sheet theme--light blue v-toolbar v-app-bar v-app-bar--is-scrolled";
                 mes.style.margin = "10px"

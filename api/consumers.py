@@ -1,30 +1,30 @@
 import json
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from accounts.models import User
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 
-class ChatConsumer(WebsocketConsumer):
+class ChatConsumer(AsyncWebsocketConsumer):
 
-    def connect(self):
-        async_to_sync(self.channel_layer.group_add)(
+    async def connect(self):
+        await self.channel_layer.group_add(
             "chat",
             self.channel_name
         )
-        self.accept()
+        await self.accept()
     
-    def disconnect(self, close_code):
-        async_to_sync(self.channel_layer.group_discard)(
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
         "chat", self.channel_name
         )
-        self.close()
+        await self.close()
         
-    def receive(self, text_data):
+    async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        async_to_sync(self.channel_layer.group_send)(
+        await self.channel_layer.group_send(
             "chat",
             {
                 'type': 'chat_message',
@@ -32,9 +32,9 @@ class ChatConsumer(WebsocketConsumer):
             }
         )
 
-    def chat_message(self, event):
+    async def chat_message(self, event):
         message = event['message']
 
-        self.send(text_data=json.dumps({
+        await self.send(text_data=json.dumps({
             'message': message
         }))
