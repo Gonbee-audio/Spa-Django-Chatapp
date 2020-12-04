@@ -13,11 +13,11 @@
     </v-app-bar>
     <v-content>
 
-    <div v-for="(u, index) in Message2" :key="'info2-' + index" align="center">
+    <div v-for="(u, index) in Message2" :key="'info2-' + index" >
         <v-card app color="blue" style="margin: 10px;">
-        {{u.nickname}}<br>
-        {{u.text}}
+        <div align="center"><a class="black--text">{{u.text}}</a></div><br>
         <a>
+            <a style="margin-left: 2%;" class="black--text">name:{{u.nickname}}</a>
             <v-btn class="ma-2" text icon color="blue lighten-2">
                 <v-icon>mdi-thumb-up</v-icon>
             </v-btn>
@@ -28,9 +28,9 @@
         </v-card>
     </div>
 
-    <textarea id="chat-log">
+    <div id="chat-log">
         
-    </textarea>
+    </div>
 
     </v-content>
     <v-form>
@@ -43,7 +43,7 @@
             label="text"
             v-model="text" />
         <v-card-actions>
-          <v-btn @click="submit" >send</v-btn>
+          <v-btn @click.enter="submit" >send</v-btn>
         </v-card-actions> 
     </v-form>
 </v-app>
@@ -71,14 +71,49 @@ export default{
       return this.$vuetify.theme.dark ? "dark" : "light";
     }
   },
-    mounted(){
+    async mounted(){
         //複数データがないとapiがhtmlを拾ってきて動かないのかもしれない。。。
         const url = "http://0.0.0.0:8000/api/chatmessage/"
-        const responce = this.$axios.$get(url)
+        const responce =  await this.$axios.$get(url)
+        console.log(responce)
         this.Message2 = responce
+        
         this.websocket.onmessage = function(e){ 
                 const data = JSON.parse(e.data)
-                document.querySelector('#chat-log').value += (data.message + '\n');
+                console.log(data.message.message)
+                const mes = document.createElement('div');
+                mes.className = "v-sheet theme--light blue v-toolbar v-app-bar v-app-bar--is-scrolled";
+                mes.style.margin = "10px"
+
+                const messageHTML = '<div>' + data.message.text + '</div>'
+                const text = document.createElement('a');
+                text.className = "black--text"        
+                text.innerHTML = messageHTML;
+                text.style.textAlign = 'center'
+
+                const name = document.createElement('a');
+                const usernameHTML = 'name:' + data.message.username
+                name.className = "black--text"
+                name.innerHTML = usernameHTML
+                name.style.marginLeft = "2%"
+                //name.style.textAlign = 'center'
+
+
+                const goodiconimg = document.createElement('i');
+                goodiconimg.className = "v-icon notranslate mdi mdi-thumb-up theme--light"
+                goodiconimg.style.color = "#64B5F6"
+                goodiconimg.style.marginLeft = "20px"
+
+                const badiconimg = document.createElement('i');
+                badiconimg.className = "v-icon notranslate mdi mdi-thumb-down theme--light"
+                badiconimg.style.color = "#E57373"
+                badiconimg.style.marginLeft = "20px"
+
+                const icon = document.createElement('button');
+                icon.className = "ma-2 v-btn v-btn--flat v-btn--icon v-btn--round v-btn--text theme--light v-size--default blue--text text--lighten-2"
+
+                let element = document.getElementById('chat-log');
+                element.appendChild(mes).appendChild(text).appendChild(name).appendChild(icon).appendChild(goodiconimg).appendChild(badiconimg)
         }
         
   },
@@ -88,19 +123,20 @@ export default{
       const webapi = new WebSocket(
             "ws://0.0.0.0:8000/api/ws/"
       );
-      
-      console.log(webapi)
-
       webapi.onopen = function(event) {
       //console.log(event)
-      console.log(webapi)
+      //console.log(webapi)
       console.log("Successfully connected to the echo websocket server...")
     }
     this.websocket = webapi
   },
   methods:{
     submit: function (e) {
-        const message = this.text
+        const message = {
+            "text": this.text,
+            "username": this.username
+        }
+        console.log(message)
         const webapi = new WebSocket(
             "ws://0.0.0.0:8000/api/ws/"
         );
@@ -110,38 +146,8 @@ export default{
                 "message": message
         }),
         );
-
-
         this.text = ""
     },
-    
-
-
-
-
-
-
-        /*
-        const url2 = new WebSocket("wss://" + "0.0.0.0:8000" + "/ws/")
-        url2.onmessage = function(evt) { responseData(evt); };
-        console.log(document)
-        const params = new URLSearchParams(url2);
-        params.append('text', this.text);
-        params.append('nickname', this.nickname);
-        params.append('username', 'tesst');
-        params.append('icon', 'test.img');
-        
-    //params.append('password', this.password);
-        await this.$axios.$post(url2, params)
-        .then(response => { 
-             console.log(response.data)
-            alert('送信に成功しました！')
-        })
-        .catch(error => {
-             console.log('response', error.response.data);
-    
-});
-*/
   }
 }
 </script>

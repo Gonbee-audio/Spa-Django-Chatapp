@@ -22,12 +22,6 @@ class ChatConsumer(WebsocketConsumer):
         self.close()
         
     def receive(self, text_data):
-        # channel_layer = get_channel_layer()
-        # if "user" not in self.scope:
-        #     print("websocket connect close")
-        #     await self.close()
-        # else:
-        print("hogehoge")
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         async_to_sync(self.channel_layer.group_send)(
