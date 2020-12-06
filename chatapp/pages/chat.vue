@@ -1,6 +1,8 @@
 <template>
 <v-app :style="{background: $vuetify.theme.themes[theme].background}">
-    <v-app-bar>
+
+    <v-content>
+    <v-card app color="white" style="margin-bottom: 10px;">
         <h1>
             
             name:{{ $auth.user.username }}<br>
@@ -8,13 +10,11 @@
             <img :src="icon = 'http://0.0.0.0:8000' + $auth.user.icon" width="50" height="50">
             
         </h1>
-        <br>
-        
-    </v-app-bar>
-    <v-content>
+    <br>
+    </v-card>
 
     <div v-for="(u, index) in Message2" :key="'info2-' + index" >
-        <v-card app color="blue" style="margin: 10px;">
+        <v-card :id="u.id" app color="blue" style="margin-bottom: 10px;">
         <div align="center"><a class="black--text">{{u.text}}</a></div><br>
         <a>
             <a style="margin-left: 2%;" class="black--text">name:{{u.nickname}}</a>
@@ -24,6 +24,11 @@
             <v-btn class="ma-2" text icon color="red lighten-2">
                 <v-icon>mdi-thumb-down</v-icon>
             </v-btn>
+            <button
+                class="btn btn-danger btn-sm ml-1"
+                v-on:click="deleteSubscription(u)">
+                Delete
+            </button>
         </a>
         </v-card>
     </div>
@@ -82,7 +87,7 @@ export default{
                 const data = JSON.parse(e.data)
                 const mes = document.createElement('div');
                 mes.className = "v-sheet theme--light blue v-toolbar v-app-bar v-app-bar--is-scrolled";
-                mes.style.margin = "10px"
+                mes.style.marginBottom = "10px"
 
                 const messageHTML = '<div>' + data.message.text + '</div>'
                 const text = document.createElement('a');
@@ -131,6 +136,7 @@ export default{
   },
   methods:{
     submit: function (e) {
+        console.log(e)
         const message = {
             "text": this.text,
             "username": this.username
@@ -147,6 +153,17 @@ export default{
         );
         this.text = ""
     },
+    deleteSubscription(subscr) {
+        console.log(subscr)
+    if (confirm('Delete ' + subscr.username)) {
+        console.log(subscr.id)
+        axios.delete('http://0.0.0.0:8000/api/chatmessage/' + subscr.id)
+            .then( response => {
+                let parent = document.getElementById(subscr.id)
+                parent.remove()
+            });
+    }
+},
   }
 }
 </script>

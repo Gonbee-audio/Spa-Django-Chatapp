@@ -13,7 +13,7 @@ class ChatMessage(models.Model):
     thumbnail = models.ImageField(upload_to='images',blank=True, null=True)
     icon =models.CharField(max_length=1000)
     good = models.IntegerField(null=True, blank=True, default=0)
-    created_date = models.DateTimeField(default=timezone.now)
+    created_date = models.DateTimeField(default=timezone.now())
     
     def __str__(self):
         return self.username

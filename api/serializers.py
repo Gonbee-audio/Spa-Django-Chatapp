@@ -3,9 +3,10 @@ from .models import ChatMessage, Comment, SecredMessage
 from accounts.models import User
 
 class ChatMessageSerializers(serializers.ModelSerializer):
+
     class Meta:
         model = ChatMessage
-        fields = ('nickname', 'icon', 'text', 'username')
+        fields = ('id', 'nickname', 'icon', 'text', 'username')
 
 class CommentSerializers(serializers.ModelSerializer):
     class Meta:

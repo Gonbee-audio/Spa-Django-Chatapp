@@ -6,14 +6,23 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 
+from .models import ChatMessage
+
+
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
+        
+
         await self.channel_layer.group_add(
             "chat",
-            self.channel_name
+            self.channel_name,
         )
         await self.accept()
+
+
+
+
     
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -24,6 +33,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+
+        await self.send_message(message)
+
         await self.channel_layer.group_send(
             "chat",
             {
@@ -32,9 +44,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }
         )
 
+    @database_sync_to_async
+    def send_message(self, message):
+        
+        ChatMessage.objects.create(
+            username=message["username"],
+            nickname=message["username"],
+            text=message["text"],
+            icon="text.png" ,
+        )
+
+
     async def chat_message(self, event):
         message = event['message']
 
         await self.send(text_data=json.dumps({
             'message': message
         }))
+    
