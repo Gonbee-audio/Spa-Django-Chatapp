@@ -41,24 +41,29 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': message,
+                'id': self.p_id,
             }
         )
 
     @database_sync_to_async
     def send_message(self, message):
         
-        ChatMessage.objects.create(
+        mes = ChatMessage.objects.create(
             username=message["username"],
             nickname=message["username"],
             text=message["text"],
             icon="text.png" ,
         )
+        self.p_id = mes.id
+        return self.p_id
 
 
     async def chat_message(self, event):
+        m_id = event['id']
         message = event['message']
 
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'id': m_id
         }))
     
