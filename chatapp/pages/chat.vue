@@ -47,7 +47,15 @@
         <input type="hidden" v-model="image" value="test">
         <v-text-field prepend-icon="mdi-account-circle" 
             label="text"
-            v-model="text" />
+            v-model="text">
+                    <v-file-input label="File input"
+                      slot="append"
+                      outlined
+                      dense
+                      hide-input
+                      ></v-file-input>
+        </v-text-field>
+
         <v-card-actions>
           <v-btn @click.enter="submit" >send</v-btn>
         </v-card-actions> 
@@ -81,7 +89,6 @@ export default{
         //複数データがないとapiがhtmlを拾ってきて動かないのかもしれない。。。
         const url = "http://0.0.0.0:8000/api/chatmessage/"
         const responce =  await this.$axios.$get(url)
-        console.log(responce)
         this.Message2 = responce
         
         this.websocket.onmessage = function(e){ 
