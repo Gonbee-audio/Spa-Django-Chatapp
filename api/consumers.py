@@ -47,7 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def send_message(self, message):
-        
+        print(message)
         mes = ChatMessage.objects.create(
             username=message["username"],
             nickname=message["username"],

@@ -56,12 +56,15 @@
       </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      
       <v-btn
+        v-if ="this.$auth.loggedIn == true"
         icon
         @click.stop="rightDrawer = !rightDrawer"
       >
         <v-icon>mdi-menu</v-icon>
       </v-btn>
+
     </v-app-bar>
     <v-content>
       <v-container>
@@ -77,6 +80,7 @@
       fixed
     >
       <v-list>
+
         <v-list-item @click.native="right = !right">
           <v-list-item-action>
             <v-icon light>
@@ -108,7 +112,7 @@
 
 <!-- Open v-btn sheet-->
     <v-bottom-sheet v-model="logoutSheet">
-      <v-sheet class="text-center" height="200px" color="green">
+      <v-sheet class="text-center" height="200px" color="green lighten-5">
         <div>want you to logout?</div>
         <v-btn
           class="mt-6"
@@ -119,7 +123,7 @@
         <v-btn
           class="mt-6"
           text
-          color="blue" 
+          color="red" 
           @click="logout"
         >logout</v-btn>
       </v-sheet>

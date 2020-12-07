@@ -2,7 +2,7 @@
 <v-app :style="{background: $vuetify.theme.themes[theme].background}">
 
     <v-content>
-    <v-card app color="white" style="margin-bottom: 10px;">
+    <v-card app color="blue lighten-5" style="margin-bottom: 10px;">
         <h1>
             
             name:{{ $auth.user.username }}<br>
@@ -41,19 +41,23 @@
     <v-form>
         <input type="hidden" :value="nickname = $auth.user.nickname">
         <input type="hidden" :value="username = $auth.user.username">
-
-
-<!--まだchatの写真をimageにしてvue側にを渡すapiが完成していないからimageタグは仮のものを使います-->
         <input type="hidden" v-model="image" value="test">
         <v-text-field prepend-icon="mdi-account-circle" 
             label="text"
             v-model="text">
+            
+<!-- 　写真をデプロイするためのinput
                     <v-file-input label="File input"
                       slot="append"
                       outlined
                       dense
                       hide-input
-                      ></v-file-input>
+                      @change="submit"
+                      accept="image/*"
+                      >
+                      </v-file-input>
+-->
+
         </v-text-field>
 
         <v-card-actions>
@@ -74,7 +78,9 @@ export default{
             Message2: null,
             username: [],
             nickname: [],
-            image: [],
+            image: "",
+            uploadImageUrl: [],
+            fileName: [],
             icon: [],
             text: "",
             websocket: [],
@@ -174,18 +180,15 @@ export default{
             "ws://0.0.0.0:8000/api/ws/"
       );
       webapi.onopen = function(event) {
-      //console.log(event)
-      //console.log(webapi)
       console.log("Successfully connected to the echo websocket server...")
     }
     this.websocket = webapi
   },
   methods:{
-    submit: function (e) {
-        console.log(e)
+    submit: function (file) {
         const message = {
             "text": this.text,
-            "username": this.username
+            "username": this.username,
         }
         console.log(message)
         const webapi = new WebSocket(
