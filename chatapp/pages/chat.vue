@@ -33,9 +33,9 @@
         </v-card>
     </div>
 
-    <div id="chat-log">
+    <templates id="chat-log">
         
-    </div>
+    </templates>
 
     </v-content>
     <v-form>
