@@ -40,7 +40,7 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-{{ checksum "chatapp/package.json" }}
           - v1-dependencies-
 
       - run: npm install
@@ -51,7 +51,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "chatapp/package.json" }}
 
 workflows:
   version: 2
@@ -61,3 +61,4 @@ workflows:
       - django:
           requires:
             - build
+
