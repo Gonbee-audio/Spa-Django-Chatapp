@@ -68,4 +68,3 @@ workflows:
       - django:
           requires:
             - build
-
