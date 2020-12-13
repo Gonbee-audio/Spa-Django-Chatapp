@@ -1,5 +1,30 @@
 version: 2
 jobs:
+  build:
+    docker:
+      - image: circleci/node:7.10
+    #working_directory: ~/project/chatapp 
+    steps:
+      - checkout
+    #        path: ~/project
+
+      - run: cd chatapp; ls -la; pwd;
+
+      - restore_cache:
+          keys:
+          - chatapp-{{ checksum "package.json }}
+          - chatapp-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: chatapp-{{ checksum "package.json" }}
+      - run:
+          name: Run tests
+          command: |
+              cd chatapp
+              npm test
+
   django:
     docker:
       - image: circleci/python:3.6
@@ -33,30 +58,6 @@ jobs:
       #    path: /bin/test
       #    destination: test
 
-  build:
-    docker:
-      - image: circleci/node:7.10
-    #working_directory: ~/project/chatapp 
-    steps:
-      - checkout
-    #        path: ~/project
-
-      - run: cd chatapp; ls -la; pwd;
-
-      - restore_cache:
-          keys:
-          - chatapp-{{ checksum "package.json }}
-          - chatapp-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: chatapp-{{ checksum "package.json" }}
-      - run:
-          name: Run tests
-          command: |
-              cd chatapp
-              npm test
 
 workflows:
   version: 2
