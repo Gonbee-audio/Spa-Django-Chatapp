@@ -59,12 +59,9 @@ jobs:
           path: /bin/test
           destination: test
 
-
 workflows:
   version: 2
   sample_workflow:
     jobs:
       - build
-      - django:
-          requires:
-            - build
+      - django
