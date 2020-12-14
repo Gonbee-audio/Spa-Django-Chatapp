@@ -73,7 +73,9 @@ await this.$axios(options);
       params.append('nickname', this.username);
       params.append('password', this.password);
       
-      await this.$axios.$post('http://0.0.0.0:8000/api-user/register/', params)
+      await this.$axios.$post('http:' + window.location.hostname +
+      ':8000' +
+       '/api-user/register/', params)
 .then(response => { 
   console.log(response.data)
   console.log(this.success)

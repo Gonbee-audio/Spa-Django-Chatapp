@@ -7,7 +7,9 @@
             
             name:{{ $auth.user.username }}<br>
             nickname:{{ $auth.user.nickname }}<br>
-            <img :src="icon = 'http://0.0.0.0:8000' + $auth.user.icon" width="50" height="50">
+            <img :src="icon = 
+                 'http://' + this.hostname + ':8000' + 
+                 $auth.user.icon" width="50" height="50">
             
         </h1>
     <br>
@@ -75,6 +77,7 @@ import axios from 'axios'
 export default{
     data(){
         return{
+            hostname: window.location.hostname,
             Message2: null,
             username: [],
             nickname: [],
@@ -92,8 +95,11 @@ export default{
     }
   },
     async mounted(){
-        //複数データがないとapiがhtmlを拾ってきて動かないのかもしれない。。。
-        const url = "http://0.0.0.0:8000/api/chatmessage/"
+        //console.log(window.location)
+        const url = "http://" +  
+                    this.hostname + 
+                    ":8000" + 
+                    "/api/chatmessage/"
         const responce =  await this.$axios.$get(url)
         this.Message2 = responce
         
